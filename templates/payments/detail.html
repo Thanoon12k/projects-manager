@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment #{{ payment.id }} - Project Manager{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
+    <div class="mb-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Payment #{{ payment.id }}</h1>
+                <p class="mt-2 text-sm text-gray-600">{{ payment.payment_date }}</p>
+            </div>
+            <div class="flex space-x-3">
+                <a href="{% url 'payments:update' payment.pk %}" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-edit mr-2"></i>Edit
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-6 space-y-6">
+        <!-- Payment Details -->
+        <div>
+            <h2 class="text-xl font-semibold mb-4">Payment Details</h2>
+            <dl class="grid grid-cols-1 gap-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Amount</dt>
+                    <dd class="mt-1 text-2xl font-bold text-green-600">${{ payment.amount|floatformat:2 }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Payment Date</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ payment.payment_date }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Payment Method</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ payment.get_payment_method_display }}</dd>
+                </div>
+                {% if payment.reference_number %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Reference Number</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ payment.reference_number }}</dd>
+                </div>
+                {% endif %}
+                {% if payment.notes %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Notes</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ payment.notes }}</dd>
+                </div>
+                {% endif %}
+            </dl>
+        </div>
+
+        <!-- Project Information -->
+        <div class="border-t pt-6">
+            <h2 class="text-xl font-semibold mb-4">Project Information</h2>
+            <div class="space-y-2">
+                <p class="text-sm">
+                    <span class="font-medium text-gray-500">Project:</span>
+                    <a href="{% url 'projects:detail' payment.project.pk %}" class="text-indigo-600 hover:text-indigo-900">{{ payment.project.name }}</a>
+                </p>
+                <p class="text-sm">
+                    <span class="font-medium text-gray-500">Customer:</span>
+                    <a href="{% url 'customers:detail' payment.project.customer.pk %}" class="text-indigo-600 hover:text-indigo-900">{{ payment.project.customer.name }}</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

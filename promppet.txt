@@ -1,0 +1,20 @@
+
+build ready to deploy production project to 
+manage the project iam working on it right now
+the projects revenues types customers and files and live links also to the proect url also the rewards and loss 
+modern interactive dashboard to manage and overveiw the project and the project images also add more details aor options  
+whatsapp numbers and emails for customers link to each customer whatsapp it could be better if i can sent message to them whatsapp from my project
+the projects and other details are stored and reterived from google sheets create new one if not exist also the money paid not in one pid but as parts from total 
+:
+take consider these points must be included:
+-ask me if  you need any forther information
+-djnago and taliwind css frameworks
+-ready for production free from errors
+-media support
+-smart modern ui
+-soppurt api also for future mobile app integration
+-seprated tests folder to test each endpoint and view on my project
+-security should be taken care
+-seprated document folder that document the entire project from all prespectives full document want
+-ready to push on github and gitignore file
+-

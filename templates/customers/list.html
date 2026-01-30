@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Customers - Project Manager{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8">
+    <div class="sm:flex sm:items-center mb-6">
+        <div class="sm:flex-auto">
+            <h1 class="text-3xl font-bold text-gray-900">Customers</h1>
+            <p class="mt-2 text-sm text-gray-600">Manage all your customers</p>
+        </div>
+        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+            <a href="{% url 'customers:create' %}" class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700">
+                <i class="fas fa-plus mr-2"></i>New Customer
+            </a>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div class="bg-white shadow rounded-lg p-4 mb-6">
+        <form method="get" class="flex gap-4">
+            <input type="text" name="search" value="{{ search_query }}" placeholder="Search customers..." class="form-input flex-1">
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+                <i class="fas fa-search mr-2"></i>Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Customers Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for customer in page_obj %}
+        <div class="bg-white shadow rounded-lg p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">{{ customer.name }}</h3>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full {% if customer.is_active %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                    {% if customer.is_active %}Active{% else %}Inactive{% endif %}
+                </span>
+            </div>
+            <div class="space-y-2 text-sm text-gray-600">
+                {% if customer.email %}
+                <p><i class="fas fa-envelope mr-2"></i>{{ customer.email }}</p>
+                {% endif %}
+                {% if customer.whatsapp_number %}
+                <p>
+                    <i class="fab fa-whatsapp mr-2 text-green-600"></i>
+                    <a href="{{ customer.get_whatsapp_link }}" target="_blank" class="text-indigo-600 hover:underline">{{ customer.whatsapp_number }}</a>
+                </p>
+                {% endif %}
+                {% if customer.company %}
+                <p><i class="fas fa-building mr-2"></i>{{ customer.company }}</p>
+                {% endif %}
+                <p class="text-xs text-gray-500 mt-4">{{ customer.projects.count }} project(s)</p>
+            </div>
+            <div class="mt-4 flex space-x-2">
+                <a href="{% url 'customers:detail' customer.pk %}" class="flex-1 text-center px-3 py-2 text-sm text-indigo-600 hover:text-indigo-900 border border-indigo-600 rounded-md">
+                    View
+                </a>
+                <a href="{% url 'customers:update' customer.pk %}" class="flex-1 text-center px-3 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md">
+                    Edit
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-3 text-center py-12 text-gray-500">
+            <i class="fas fa-users text-4xl mb-4"></i>
+            <p>No customers found</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="mt-6 flex items-center justify-between">
+        <div class="text-sm text-gray-700">
+            Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} results
+        </div>
+        <div class="flex space-x-2">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                Previous
+            </a>
+            {% endif %}
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                Next
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
